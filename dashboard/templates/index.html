@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaurdin Content OS Lite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f1115;
+            --panel-bg: rgba(25, 28, 35, 0.7);
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(79, 70, 229, 0.15), transparent 25%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand p {
+            margin: 5px 0 0 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        button, .btn {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        button:hover, .btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        button.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        button.primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .history-section {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .history-section h2 {
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .history-item {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-topic {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .badge {
+            background: rgba(79, 70, 229, 0.2);
+            color: #a5b4fc;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .item-content {
+            color: var(--text-muted);
+            font-size: 14px;
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: translateY(150%);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="brand">
+                <h1>Vaurdin Content OS</h1>
+                <p>Autonomous Research & Generation System</p>
+            </div>
+        </header>
+
+        <div class="controls">
+            <button class="primary" onclick="triggerAction('/api/generate-today')">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 8px;"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                Generate Today
+            </button>
+            <button onclick="triggerAction('/api/generate-blog')">Generate Blog</button>
+            <button onclick="triggerAction('/api/generate-social')">Generate Social</button>
+            <a href="/api/export" class="btn">Export Content</a>
+        </div>
+
+        <div class="history-section">
+            <h2>Recent Generations</h2>
+            <ul class="history-list">
+                {% for item in history %}
+                <li class="history-item">
+                    <div class="item-header">
+                        <span class="item-topic">{{ item.topic }}</span>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <button class="btn-copy" onclick="regenerateContent(this, '{{ item.topic }}', '{{ item.type }}')" style="padding: 4px 10px; font-size: 12px; border-radius: 6px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--text-main); cursor: pointer;">Regenerate</button>
+                            <button class="btn-copy" onclick="copyContent(this, `{{ item.content | replace('`', '\\`') | replace('$', '\\$') }}`)" style="padding: 4px 10px; font-size: 12px; border-radius: 6px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--text-main); cursor: pointer;">Copy</button>
+                            <span class="badge">{{ item.type }}</span>
+                        </div>
+                    </div>
+                    <div class="item-content">{{ item.content }}</div>
+                </li>
+                {% else %}
+                <li class="history-item" style="color: var(--text-muted); text-align: center;">No content generated yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div id="notification" class="notification">Action triggered successfully.</div>
+
+    <script>
+        function showNotification(message, isError = false) {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.style.background = isError ? '#ef4444' : 'var(--accent)';
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+        
+        async function copyContent(btn, text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied!';
+                btn.style.background = 'var(--accent)';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = 'rgba(255,255,255,0.1)';
+                }, 2000);
+            } catch (err) {
+                showNotification('Failed to copy', true);
+            }
+        }
+
+        async function regenerateContent(btn, topic, type) {
+            const originalText = btn.innerText;
+            btn.innerText = 'Generating...';
+            btn.disabled = true;
+            try {
+                const response = await fetch('/api/regenerate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic, type })
+                });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    showNotification(data.message);
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    showNotification(data.message, true);
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                showNotification('Network error occurred.', true);
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function triggerAction(endpoint) {
+            try {
+                const response = await fetch(endpoint, { method: 'POST' });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    showNotification(data.message);
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    showNotification(data.message, true);
+                }
+            } catch (error) {
+                showNotification('Network error occurred.', true);
+            }
+        }
+    </script>
+</body>
+</html>
