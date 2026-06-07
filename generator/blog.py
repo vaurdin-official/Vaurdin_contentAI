@@ -59,7 +59,10 @@ Output JSON format ONLY: {{"title": "...", "slug": "...", "category": "...", "ma
             # Save to JSON file
             date_str = datetime.now().strftime("%Y-%m-%d")
             filename = f"{date_str}-{topic.replace(' ', '-').lower()}-blog.json"
-            filepath = os.path.join(os.path.dirname(__file__), '..', 'storage', 'blogs', filename)
+            if os.environ.get('VERCEL') == '1':
+                filepath = os.path.join('/tmp', 'blogs', filename)
+            else:
+                filepath = os.path.join(os.path.dirname(__file__), '..', 'storage', 'blogs', filename)
             
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
             with open(filepath, 'w', encoding='utf-8') as f:

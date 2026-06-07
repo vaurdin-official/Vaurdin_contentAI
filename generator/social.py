@@ -65,7 +65,10 @@ Platform Rules:
             # Save to JSON file
             date_str = datetime.now().strftime("%Y-%m-%d")
             filename = f"{date_str}-{topic.replace(' ', '-').lower()}-{platform.lower()}.json"
-            filepath = os.path.join(os.path.dirname(__file__), '..', 'storage', 'posts', filename)
+            if os.environ.get('VERCEL') == '1':
+                filepath = os.path.join('/tmp', 'posts', filename)
+            else:
+                filepath = os.path.join(os.path.dirname(__file__), '..', 'storage', 'posts', filename)
             
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
             with open(filepath, 'w', encoding='utf-8') as f:

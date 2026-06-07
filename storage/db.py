@@ -1,7 +1,10 @@
 import sqlite3
 import os
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'db.sqlite')
+if os.environ.get('VERCEL') == '1':
+    DB_PATH = '/tmp/db.sqlite'
+else:
+    DB_PATH = os.path.join(os.path.dirname(__file__), 'db.sqlite')
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)

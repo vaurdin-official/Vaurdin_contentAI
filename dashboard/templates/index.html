@@ -179,6 +179,16 @@
             transform: translateY(0);
         }
 
+        /* Mobile Optimization */
+        @media (max-width: 640px) {
+            .container { padding: 20px 16px; }
+            header { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 30px; }
+            .brand h1 { font-size: 24px; }
+            .controls { grid-template-columns: 1fr; gap: 10px; }
+            .history-section { padding: 16px; }
+            .item-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .notification { left: 20px; right: 20px; text-align: center; }
+        }
     </style>
 </head>
 <body>
