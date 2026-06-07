@@ -74,6 +74,15 @@ Output JSON format ONLY: {{"title": "...", "slug": "...", "category": "...", "ma
             return None
     except Exception as e:
         print(f"Connection error to Ollama: {e}")
+        if os.environ.get('VERCEL') == '1':
+            parsed_content = {
+                "title": f"The Future of {topic}",
+                "slug": topic.replace(' ', '-').lower(),
+                "category": style,
+                "markdown": f"# The Future of {topic}\n\nThis is a mock blog post because Vercel cannot reach your local Ollama instance at `localhost:11434`.\n\n## Next Steps\nTo get real AI content, update `OLLAMA_API` in `generator/blog.py` to point to a public LLM provider like OpenAI or Groq."
+            }
+            save_post(topic, "blog", json.dumps(parsed_content))
+            return parsed_content
         return None
 
 if __name__ == "__main__":

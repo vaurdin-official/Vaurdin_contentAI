@@ -80,6 +80,16 @@ Platform Rules:
             return None
     except Exception as e:
         print(f"Connection error to Ollama: {e}")
+        if os.environ.get('VERCEL') == '1':
+            parsed_content = {
+                "type": "social",
+                "topic": topic,
+                "platform": platform,
+                "caption": f"🚀 Exciting thoughts on {topic}! (This is a mock post because Vercel cannot reach your local Ollama instance). #Vaurdin #{style.replace(' ', '')}",
+                "hashtags": ["#Vaurdin", f"#{style.replace(' ', '')}"]
+            }
+            save_post(topic, platform, json.dumps(parsed_content))
+            return parsed_content
         return None
 
 if __name__ == "__main__":
