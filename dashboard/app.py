@@ -60,7 +60,9 @@ def api_generate_blog():
     try:
         topics = collect_topics()
         target_topic = topics[0] if topics else "AI workflows"
-        generate_blog(target_topic, "AI") # Default to AI style for manual
+        result = generate_blog(target_topic, "AI") # Default to AI style for manual
+        if not result:
+            return jsonify({"status": "error", "message": "Failed to connect to LLM (Ollama). Check logs."}), 500
         return jsonify({"status": "success", "message": f"Blog generated for: {target_topic}"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -70,7 +72,9 @@ def api_generate_social():
     try:
         topics = collect_topics()
         target_topic = topics[0] if topics else "startup growth"
-        generate_social_content(target_topic, "X", "startup")
+        result = generate_social_content(target_topic, "X", "startup")
+        if not result:
+            return jsonify({"status": "error", "message": "Failed to connect to LLM (Ollama). Check logs."}), 500
         return jsonify({"status": "success", "message": f"Social post generated for: {target_topic}"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -86,9 +90,13 @@ def api_regenerate():
         
     try:
         if item_type.lower() == "blog":
-            generate_blog(topic, "AI") # default style
+            result = generate_blog(topic, "AI") # default style
         else:
-            generate_social_content(topic, item_type, "startup") # default style
+            result = generate_social_content(topic, item_type, "startup") # default style
+            
+        if not result:
+            return jsonify({"status": "error", "message": "Failed to connect to LLM (Ollama). Check logs."}), 500
+            
         return jsonify({"status": "success", "message": f"Regenerated {item_type} for: {topic}"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
