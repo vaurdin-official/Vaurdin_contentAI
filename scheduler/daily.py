@@ -46,11 +46,15 @@ def daily_workflow():
     platforms = ["Instagram", "LinkedIn", "X"]
     for platform in platforms:
         print(f"Generating {platform} post...")
-        generate_social_content(target_topic, platform, style)
+        result = generate_social_content(target_topic, platform, style)
+        if not result:
+            raise Exception(f"Failed to connect to LLM (Ollama) while generating {platform} post. Check logs.")
         
     # Generate Blog
     print("Generating Blog post...")
-    generate_blog(target_topic, style)
+    result = generate_blog(target_topic, style)
+    if not result:
+        raise Exception("Failed to connect to LLM (Ollama) while generating blog post. Check logs.")
     
     print("Daily workflow completed successfully.")
 
